@@ -1,6 +1,8 @@
 language: java
 sudo: false
 install: true
+addons:
+  sonarqube:
 jdk:
   - oraclejdk8
 script:
