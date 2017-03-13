@@ -2,14 +2,15 @@ package HolidayPlanner;
 
 import javax.validation.constraints.NotNull;
 
+
 /**
  *
  * @author Stijn
  */
 public class Login {
+    
     @NotNull
     private String userName;
-    
     @NotNull
     private String passWord;
 
