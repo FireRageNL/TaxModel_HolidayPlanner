@@ -28,7 +28,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
     }
 
     @PostMapping("/login")
-    public String greetingSubmit(@ModelAttribute Login login) {
+    public String loginSubmit(@ModelAttribute Login login) {
         return "secret";
     }
 }
