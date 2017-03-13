@@ -1,4 +1,4 @@
-package HolidayPlanner;
+package planner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,15 +18,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  */
 @Service("customUserDetailService")
 public class CustomUserDetailService implements UserDetailsService{
-    private final LoginRepository LoginRepository;
+    private final LoginRepository loginRepository;
 
     @Autowired
     public CustomUserDetailService(LoginRepository logRepo){
-        this.LoginRepository = logRepo;
+        this.loginRepository = logRepo;
     }
     @Override
-    public UserDetails loadUserByUsername(String string) throws UsernameNotFoundException {
-        Login user = LoginRepository.findByUserName(string);
+    public UserDetails loadUserByUsername(String string) {
+        Login user = loginRepository.findByUserName(string);
         if(user == null){
             throw new UsernameNotFoundException("No username found with the username: "+ string);
         }

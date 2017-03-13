@@ -1,4 +1,4 @@
-package HolidayPlanner;
+package planner;
 
 import java.io.Serializable;
 import javax.persistence.*;

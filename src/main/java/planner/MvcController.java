@@ -1,4 +1,4 @@
-package HolidayPlanner;
+package planner;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

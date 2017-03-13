@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HolidayPlanner;
+package planner;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author roy_v
  */
 public class CustomUserDetail extends Login implements UserDetails {
-    private List<String> userRoles;
     public CustomUserDetail(Login log){
         super(log);
     }
