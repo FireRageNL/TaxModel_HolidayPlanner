@@ -14,14 +14,13 @@ public class Login implements Serializable {
     private Long idUser;
     
     @Column(name = "userName")
-    @NotNull
     private String userName;
     
     @Column(name = "passWord")
-    @NotNull
     private String passWord;
 
     public Login() {
+        //Empty constructor for JPA
     }
 
     public Login(Login user) {
