@@ -1,18 +1,32 @@
 package HolidayPlanner;
 
+import java.io.Serializable;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Entity
+@Table(name = "users")
+public class Login implements Serializable {
 
-/**
- *
- * @author Stijn
- */
-public class Login {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "idUser")
+    private Long idUser;
     @NotNull
+    @Column(name = "userName")
     private String userName;
+    @Column(name = "passWord")
     @NotNull
     private String passWord;
+
+    public Login() {
+    }
+
+    public Login(Login user) {
+        this.idUser = user.idUser;
+        this.userName = user.userName;
+        this.passWord = user.passWord;
+    }
 
     public String getUserName() {
         return userName;

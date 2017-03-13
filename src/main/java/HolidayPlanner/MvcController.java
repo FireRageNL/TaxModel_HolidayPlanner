@@ -13,11 +13,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @author Stijn
  */
 @Controller
-public class LoginController extends WebMvcConfigurerAdapter {
+public class MvcController extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
+        registry.addViewController("/secret").setViewName("secret");
     }
 
     @GetMapping("/login")
@@ -28,6 +29,6 @@ public class LoginController extends WebMvcConfigurerAdapter {
 
     @PostMapping("/login")
     public String greetingSubmit(@ModelAttribute Login login) {
-        return "index";
+        return "secret";
     }
 }
