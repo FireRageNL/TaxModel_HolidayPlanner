@@ -7,9 +7,9 @@
         
     </head>
     <body>
-        <form method="post">
-            <input type="text" name="userName" placeholder="Gebruikersnaam" /> <br/>
-            <input type="password" name="passWord" placeholder="Wachtwoord" /> <br/>
+        <form action="#" th:action="@{/}" method="post">
+            <input type="text" name="userName" th:field="*{userName}" placeholder="Gebruikersnaam" /> <br/>
+            <input type="password" name="passWord" th:field="*{passWord}" placeholder="Wachtwoord" /> <br/>
             <input type="submit" value="Login" />
         </form>
     </body>
