@@ -12,9 +12,11 @@ public class Login implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idUser")
     private Long idUser;
-    @NotNull
+    
     @Column(name = "userName")
+    @NotNull
     private String userName;
+    
     @Column(name = "passWord")
     @NotNull
     private String passWord;
