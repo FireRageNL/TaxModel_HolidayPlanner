@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class RegistrationService {
 
     @Autowired
-    LoginRepository loginRepository;
+    private LoginRepository loginRepository;
 
     BCryptPasswordEncoder bCryptPasswordEncoder;
 

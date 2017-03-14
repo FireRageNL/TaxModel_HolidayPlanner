@@ -1,9 +1,9 @@
 package planner;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -14,8 +14,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Controller
 public class MvcController extends WebMvcConfigurerAdapter {
-
-    RegistrationService regService = new RegistrationService();
+    
+    @Autowired
+    private RegistrationService regService;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
