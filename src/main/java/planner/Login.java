@@ -28,6 +28,11 @@ public class Login implements Serializable {
         this.passWord = user.passWord;
     }
 
+    public Login(String passWord, String userName) {
+        this.passWord = passWord;
+        this.userName = userName;
+    }
+
     public String getUserName() {
         return userName;
     }

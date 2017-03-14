@@ -15,6 +15,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Controller
 public class MvcController extends WebMvcConfigurerAdapter {
 
+    RegistrationService regService = new RegistrationService();
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
@@ -22,13 +24,23 @@ public class MvcController extends WebMvcConfigurerAdapter {
     }
 
     @GetMapping("/login")
-    public String showForm(Model model) {
-        model.addAttribute("login",new Login());
+    public String showLoginForm(Model model) {
+        model.addAttribute("login", new Login());
         return "login";
     }
 
-    @PostMapping("/login")
-    public String loginSubmit(@ModelAttribute Login login) {
-        return "secret";
+    @GetMapping("/register")
+    public String showRegForm(Model model) {
+        model.addAttribute("Register", new Register());
+        return "Register";
+    }
+
+    @PostMapping("/register")
+    public String register(Register reg) {
+        if (reg.getPassWord().equals(reg.getPasswordVerify())) {
+            regService.Save(new Login(reg.getPassWord(), reg.getUserName()));
+            return "redirect:/secret";
+        }
+        return "redirect:/register";
     }
 }
