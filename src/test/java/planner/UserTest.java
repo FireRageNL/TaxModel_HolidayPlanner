@@ -113,16 +113,6 @@ public class UserTest {
     }
 
     /**
-     * Test of getIdUser method, of class User.
-     */
-    @Test
-    public void testGetIdUser() {
-        System.out.println("getIdUser");
-        User instance = new User();
-        assertNotNull(instance.getIdUser());
-    }
-
-    /**
      * Test of getDaysOff method, of class User.
      */
     @Test

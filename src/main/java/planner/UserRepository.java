@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
  * @author roy_v
  */
 @Repository
-public interface LoginRepository extends CrudRepository<Login,Long> {
-    public Login findByUserName(String username);   
+public interface UserRepository extends CrudRepository<User, Long>{
+    
 }
