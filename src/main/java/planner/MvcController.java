@@ -45,14 +45,17 @@ public class MvcController extends WebMvcConfigurerAdapter {
         if (bindingResult.hasErrors()) {
             return "user";
         }
-        if (loginRepo.findByUserName(reg.getUserName())) {
-            if (reg.getPassWord().equals(reg.getPasswordVerify())) {
-                regService.Save(new User(reg.getPassWord(), reg.getUserName(), reg.getDaysOff()));
-                return "redirect:/secret";
-            } else {
-                bindingResult.addError(new ObjectError("PasswordFail", "Please enter matching passwords"));
-                return "user";
-            }
+        if (loginRepo.findByUserName(reg.getUserName()) == null) {
+            bindingResult.addError(new ObjectError("UsernameExists", "This username already exists, please chose another"));
+            return "user";
+        }
+        if (reg.getPassWord().equals(reg.getPasswordVerify())) {
+            regService.Save(new User(reg.getPassWord(), reg.getUserName(), reg.getDaysOff()));
+            return "redirect:/secret";
+        } else {
+            bindingResult.addError(new ObjectError("PasswordFail", "Please enter matching passwords"));
+            return "user";
         }
     }
 }
+
