@@ -29,10 +29,10 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idUser")
     private Long idUser;
-    @Size(min = 3, max = 4, message = "Username is too short or too long")
+    @Size(min = 3, max = 40, message = "Username is too short or too long")
     @Column(name = "userName")
     private String userName;
-    @NotNull(message = "Please fill in a password")
+    @Size(min=4, message = "The password needs to be at least 4 characters long")
     @Column(name = "passWord")
     private String passWord;
     @NotNull(message = "Please repeat your password")
@@ -42,23 +42,19 @@ public class User implements Serializable {
     @Column(name = "daysOff")
     private int daysOff;
 
-    public User(String userName, String passWord, String passwordVerify, int daysOff) {
-        this.userName = userName;
-        this.passWord = passWord;
-        this.passwordVerify = passwordVerify;
-        this.daysOff = daysOff;
-    }
-
     public User() {
         //Empty constructor
     }
 
     public User(User user) {
         this.daysOff = user.daysOff;
-
+        this.idUser = user.idUser;
+        this.passWord = user.passWord;
+        this.passwordVerify = user.passwordVerify;
+        this.userName = user.userName;
     }
 
-    User(String passWord, String userName, int daysOff) {
+    public User(String passWord, String userName, int daysOff) {
         this.userName = userName;
         this.passWord = passWord;
         this.daysOff = daysOff;
@@ -90,6 +86,9 @@ public class User implements Serializable {
 
     public Long getIdUser() {
         return idUser;
+    }
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
     public int getDaysOff() {

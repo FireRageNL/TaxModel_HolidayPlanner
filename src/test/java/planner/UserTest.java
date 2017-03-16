@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 public class UserTest {
 
     User testRegister;
+    User testUser;
 
     public UserTest() {
     }
@@ -33,7 +34,10 @@ public class UserTest {
 
     @Before
     public void setUp() {
-        testRegister = new User("Test", "testing", "testing",25);
+        testRegister = new User("testing", "Test", 25);
+        testRegister.setPasswordVerify("testing");
+        testUser = new User(testRegister);
+        testUser.setIdUser(2L);
     }
 
     @After
@@ -132,7 +136,30 @@ public class UserTest {
         int daysOff = 30;
         User instance = new User();
         instance.setDaysOff(daysOff);
-        assertEquals(daysOff,instance.getDaysOff());
+        assertEquals(daysOff, instance.getDaysOff());
+    }
+
+    /**
+     * Test of getIdUser method, of class User.
+     */
+    @Test
+    public void testGetIdUser() {
+        System.out.println("getIdUser");
+        Long expResult = 2L;
+        Long result = testUser.getIdUser();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setIdUser method, of class User.
+     */
+    @Test
+    public void testSetIdUser() {
+        System.out.println("setIdUser");
+        Long idUser = 3L;
+        User instance = testRegister;
+        instance.setIdUser(idUser);
+        assertEquals(idUser, instance.getIdUser());
     }
 
 }
