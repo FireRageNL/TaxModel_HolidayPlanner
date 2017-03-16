@@ -91,5 +91,14 @@ public class LoginTest {
         instance.setPassWord(passWord);
         assertEquals("bbbb",instance.getPassWord());
     }
+    @Test
+    public void customConstructorTest(){
+        System.out.println("Custom constructor test");
+        Login instance = new Login("testpw","testuser");
+        String password = "testpw";
+        String username = "testuser";
+        assertEquals(password,instance.getPassWord());
+        assertEquals(username,instance.getUserName());
+    }
 
 }

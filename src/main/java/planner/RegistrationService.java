@@ -25,7 +25,7 @@ public class RegistrationService {
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
-    public void Save(Login user) {
+    public void Save(User user) {
         String password = user.getPassWord();
         String encryptedPassword = bCryptPasswordEncoder.encode(password);
         user.setPassWord(encryptedPassword);

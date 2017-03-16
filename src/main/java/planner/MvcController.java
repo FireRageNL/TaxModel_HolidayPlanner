@@ -1,8 +1,11 @@
 package planner;
 
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -14,7 +17,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Controller
 public class MvcController extends WebMvcConfigurerAdapter {
-    
+
+    @Autowired
+    private LoginRepository loginRepo;
     @Autowired
     private RegistrationService regService;
 
@@ -31,17 +36,23 @@ public class MvcController extends WebMvcConfigurerAdapter {
     }
 
     @GetMapping("/register")
-    public String showRegForm(Model model) {
-        model.addAttribute("Register", new Register());
-        return "Register";
+    public String showRegForm(User reg, BindingResult bindingResult) {
+        return "user";
     }
 
     @PostMapping("/register")
-    public String register(Register reg) {
-        if (reg.getPassWord().equals(reg.getPasswordVerify())) {
-            regService.Save(new Login(reg.getPassWord(), reg.getUserName()));
-            return "redirect:/secret";
+    public String register(@Valid User reg, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "user";
         }
-        return "redirect:/register";
+        if (loginRepo.findByUserName(reg.getUserName())) {
+            if (reg.getPassWord().equals(reg.getPasswordVerify())) {
+                regService.Save(new User(reg.getPassWord(), reg.getUserName(), reg.getDaysOff()));
+                return "redirect:/secret";
+            } else {
+                bindingResult.addError(new ObjectError("PasswordFail", "Please enter matching passwords"));
+                return "user";
+            }
+        }
     }
 }
