@@ -69,6 +69,8 @@ public class MvcController extends WebMvcConfigurerAdapter {
     @PostMapping("/request")
     public String sendRequest(@ModelAttribute("RequestModel") @Valid RequestModel reg, BindingResult bindingResult) {
         
+        System.out.println(reg.getEndDate());
+        
         if(bindingResult.hasErrors()){
             System.out.println(bindingResult.getAllErrors().toString());
             return "request";

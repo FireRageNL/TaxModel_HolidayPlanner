@@ -6,9 +6,10 @@
 package security.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /** 
@@ -32,14 +33,14 @@ public class RequestModel implements Serializable {
     private String reason;
     
     @Column(name = "startDate", nullable = false)
-    @NotNull(message = "Please fill in the start date of your vacation")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date startDate;
     
     @Column(name = "endDate", nullable = false)
-    @NotNull(message = "Please fill in the end date of your vacation")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date endDate;
+    
+    SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-DD");
     
     public RequestModel() {
         // Empty Constructor
@@ -72,16 +73,16 @@ public class RequestModel implements Serializable {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartDate(String startDate) throws ParseException {
+        this.startDate = formatter.parse(startDate);
     }
 
     public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndDate(String endDate) throws ParseException {
+        this.endDate = formatter.parse(endDate);
     }
     
 }
