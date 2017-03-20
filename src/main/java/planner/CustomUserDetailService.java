@@ -1,4 +1,4 @@
-package security;
+package planner;
 
 import security.model.CustomUserDetail;
 import security.repo.LoginRepository;
@@ -6,6 +6,8 @@ import security.model.Login;
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +26,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * @author roy_v
  */
 @Service("customUserDetailService")
+@EnableJpaRepositories(basePackages = "security.repo")
+@EntityScan(basePackages = "security.model")
 public class CustomUserDetailService implements UserDetailsService {
 
     private final LoginRepository loginRepository;

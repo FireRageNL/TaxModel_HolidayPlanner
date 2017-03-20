@@ -3,6 +3,7 @@ package security.model;
  *
  * @author roy_v
  */
+import security.model.Login;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Set;
