@@ -40,7 +40,7 @@ public class RequestModel implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date endDate;
     
-    SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-DD");
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     
     public RequestModel() {
         // Empty Constructor
@@ -74,6 +74,7 @@ public class RequestModel implements Serializable {
     }
 
     public void setStartDate(String startDate) throws ParseException {
+        System.out.println("Start date is: "+startDate);
         this.startDate = formatter.parse(startDate);
     }
 
@@ -82,6 +83,8 @@ public class RequestModel implements Serializable {
     }
 
     public void setEndDate(String endDate) throws ParseException {
+        System.out.println("End date is:"+endDate);
+        
         this.endDate = formatter.parse(endDate);
     }
     
