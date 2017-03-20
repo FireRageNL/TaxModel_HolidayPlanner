@@ -63,12 +63,12 @@ public class MvcController extends WebMvcConfigurerAdapter {
     
     @GetMapping("/request")
     public String showRequestForm(Model model) {
-        model.addAttribute("request", new RequestModel());
+        model.addAttribute("RequestModel", new RequestModel());
         return "request";
     }
     
     @PostMapping("/request")
-    public String sendRequest(@Valid RequestModel reg, BindingResult bindingResult) {
+    public String sendRequest(@ModelAttribute("RequestModel") @Valid RequestModel reg, BindingResult bindingResult) {
         
         if(bindingResult.hasErrors()){
             System.out.println(bindingResult.getAllErrors().toString());

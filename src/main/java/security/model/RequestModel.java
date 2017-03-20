@@ -8,6 +8,7 @@ package security.model;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /** 
@@ -30,13 +31,15 @@ public class RequestModel implements Serializable {
     @Column(name = "reason")
     private String reason;
     
-    @Column(name = "fromDate", nullable = false)
+    @Column(name = "startDate", nullable = false)
+    @NotNull(message = "Please fill in the start date of your vacation")
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date fromDate;
+    private Date startDate;
     
-    @Column(name = "tillDate", nullable = false)
+    @Column(name = "endDate", nullable = false)
+    @NotNull(message = "Please fill in the end date of your vacation")
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date tillDate;
+    private Date endDate;
     
     public RequestModel() {
         // Empty Constructor
@@ -45,8 +48,8 @@ public class RequestModel implements Serializable {
     public RequestModel(Long idUser, String reason, Date fromDate, Date tillDate) {
         this.idUser = idUser;
         this.reason = reason;
-        this.fromDate = fromDate;
-        this.tillDate = tillDate;
+        this.startDate = fromDate;
+        this.endDate = tillDate;
     }
 
     public Long getIdUser() {
@@ -65,20 +68,20 @@ public class RequestModel implements Serializable {
         this.reason = reason;
     }
 
-    public Date getFromDate() {
-        return fromDate;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setFromDate(Date fromDate) {
-        this.fromDate = fromDate;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public Date getTillDate() {
-        return tillDate;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setTillDate(Date tillDate) {
-        this.tillDate = tillDate;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
     
 }
