@@ -44,22 +44,23 @@ public class MvcController extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/secret").setViewName("secret");
     }
-    
+
     @GetMapping("/home")
-    public String showIndex(Model model){
+    public String showIndex(Model model) {
         ArrayList<SideBarModel> navigations = new ArrayList<>();
-        
+
         navigations.add(new SideBarModel("Home", "/home"));
         navigations.add(new SideBarModel("Login", "/"));
         navigations.add(new SideBarModel("Request days off", "/request"));
-        
+
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         LoginModel userNameModel = loginRepo.findByUserName(name);
         Set<RoleModel> roleModels = userNameModel.getRoles();
-        for(RoleModel role : roleModels){
-            if(role.getName().equals("ADMIN")){
+        for (RoleModel role : roleModels) {
+            if (role.getName().equals("ADMIN")) {
                 navigations.add(new SideBarModel("Register", "/register"));
-                navigations.add(new SideBarModel("Edit user","/edit"));
+                navigations.add(new SideBarModel("Edit user", "/edit"));
+                navigations.add(new SideBarModel("Show holiday requests", "/openrequests"));
             }
         }
         model.addAttribute("SideBarModel", navigations);
@@ -72,40 +73,44 @@ public class MvcController extends WebMvcConfigurerAdapter {
         return "login";
     }
 
+    @GetMapping("/login")
+    public String showLoginFormAgain(Model model) {
+        model.addAttribute("LoginModel", new LoginModel());
+        return "login";
+    }
+
     @GetMapping("/register")
     public String showRegForm(Model model) {
         model.addAttribute("LoginModel", new LoginModel());
         return "user";
     }
-    
+
     @GetMapping("/request")
     public String showRequestForm(Model model) {
         model.addAttribute("RequestModel", new RequestModel());
         return "request";
     }
-    
+
     @PostMapping("/request")
     public String sendRequest(@ModelAttribute("RequestModel") @Valid RequestModel reg, BindingResult bindingResult) {
-        
-        if(bindingResult.hasErrors()){
+
+        if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.getAllErrors().toString());
             return "request";
         }
-        
-        if(reg.getEndDate().before(reg.getStartDate())){
+
+        if (reg.getEndDate().before(reg.getStartDate())) {
             bindingResult.addError(new ObjectError("endDateBeforeStart", "The selected end date is before the start date, please choose another end date."));
             return "request";
-        }
-        
-        else{
+        } else {
             String userName = SecurityContextHolder.getContext().getAuthentication().getName();
             reg.setRequestor(loginRepo.findByUserName(userName));
             requestRepo.save(reg);
-            return "redirect:/secret";    
+            return "redirect:/secret";
         }
-       
+
     }
-    
+
     @PostMapping("/register")
     public String register(@ModelAttribute("LoginModel") @Valid LoginModel reg, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -121,30 +126,36 @@ public class MvcController extends WebMvcConfigurerAdapter {
         } else {
             bindingResult.addError(new ObjectError("PasswordFail", "Please enter matching passwords"));
             return "user";
-        } 
-   }
-    
-   @GetMapping("/edit")
-   public String showEditForm(Model model) {
-       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-       String userName = auth.getName();
-       model.addAttribute("LoginModel", loginRepo.findByUserName(userName));
-       return "edit";
-   }
-   
-   @PostMapping("/edit")
-   public String editUser(@ModelAttribute("LoginModel") @Valid LoginModel reg, BindingResult bindingResult) {
+        }
+    }
+
+    @GetMapping("/edit")
+    public String showEditForm(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+        model.addAttribute("LoginModel", loginRepo.findByUserName(userName));
+        return "edit";
+    }
+
+    @PostMapping("/edit")
+    public String editUser(@ModelAttribute("LoginModel") @Valid LoginModel reg, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "edit";
         }
-        
+
         LoginModel oldUser = loginRepo.findByUserName(reg.getUserName());
         oldUser.setUserName(reg.getUserName());
         oldUser.setDaysOff(reg.getDaysOff());
         oldUser.setPassWord(reg.getPassWord());
-        
+
         regService.Save(oldUser);
-        
+
         return "edit";
-   }
+    }
+
+    @GetMapping("/openrequests")
+    public String getRequests(Model model) {
+        model.addAttribute("requests", requestRepo.findAll());
+        return "openrequests";
+    }
 }
