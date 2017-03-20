@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
-public class Login implements Serializable {
+public class LoginModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,19 +28,19 @@ public class Login implements Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "idUser"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private Set<RoleModel> roles;
 
-    public Login() {
+    public LoginModel() {
         //Empty constructor for JPA
     }
 
-    public Login(Login user) {
+    public LoginModel(LoginModel user) {
         this.idUser = user.idUser;
         this.userName = user.userName;
         this.passWord = user.passWord;
     }
 
-    public Login(String passWord, String userName, int daysOff) {
+    public LoginModel(String passWord, String userName, int daysOff) {
         this.passWord = passWord;
         this.userName = userName;
         this.daysOff = daysOff;
@@ -62,11 +62,11 @@ public class Login implements Serializable {
         this.passWord = passWord;
     }
 
-    public Set<Role> getRoles() {
+    public Set<RoleModel> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<RoleModel> roles) {
         this.roles = roles;
     }
 
