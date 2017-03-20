@@ -97,5 +97,13 @@ public class RequestModel implements Serializable {
     public void setEndDate(String endDate) throws ParseException {        
         this.endDate = formatter.parse(endDate);
     }
+
+    public Long getIdRequest() {
+        return idRequest;
+    }
+
+    public void setIdRequest(Long idRequest) {
+        this.idRequest = idRequest;
+    }
     
 }

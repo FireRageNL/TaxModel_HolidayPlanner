@@ -14,13 +14,13 @@ public class SideBarModel {
     private String name;
     private String location;
 
-    public SideBarModel(String Name, String Location) {
-        this.name = Name;
-        this.location = Location;
+    public SideBarModel(String name, String location) {
+        this.name = name;
+        this.location = location;
     }
 
-    public void setLocation(String Location) {
-        this.location = Location;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getLocation() {
@@ -31,8 +31,8 @@ public class SideBarModel {
         return name;
     }
 
-    public void setName(String Name) {
-        this.name = Name;
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

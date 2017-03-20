@@ -24,6 +24,7 @@ and open the template in the editor.
                 <td th:text="${request.startDate}"> </td>
                 <td th:text="${request.endDate}"> </td>
                 <td th:text="${request.reason}"> </td>
+                <td><a th:href='@{/openrequests/accept/(${request.idRequest})}' th:text='Accept'></a>   <a th:href='@{/openrequests/deny/(${request.idRequest})}' th:text='Deny'></a></td>
             </tr>
         </table>
     </body>
