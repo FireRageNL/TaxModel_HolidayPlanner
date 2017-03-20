@@ -2,9 +2,10 @@ package planner;
 
 import security.repo.LoginRepository;
 import security.model.Login;
-import security.RegistrationService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @author Stijn
  */
 @Controller
+@EnableJpaRepositories(basePackages = "security.model")
+@EntityScan(basePackages = "security.repo")
 public class MvcController extends WebMvcConfigurerAdapter {
 
     @Autowired
@@ -61,4 +64,3 @@ public class MvcController extends WebMvcConfigurerAdapter {
         } 
    }
 }
-

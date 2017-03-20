@@ -1,12 +1,13 @@
-package security;
+package planner;
 
-import security.repo.LoginRepository;
 import security.repo.UsrRoleRepository;
+import security.repo.LoginRepository;
 import security.model.Login;
 import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import security.model.Login;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
