@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import navigation.SideBarModel;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import security.model.RequestModel;
 
@@ -96,5 +98,29 @@ public class MvcController extends WebMvcConfigurerAdapter {
             bindingResult.addError(new ObjectError("PasswordFail", "Please enter matching passwords"));
             return "user";
         } 
+   }
+    
+   @GetMapping("/edit")
+   public String showEditForm(Model model) {
+       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+       String userName = auth.getName();
+       model.addAttribute("LoginModel", loginRepo.findByUserName(userName));
+       return "edit";
+   }
+   
+   @PostMapping("/edit")
+   public String editUser(@ModelAttribute("LoginModel") @Valid LoginModel reg, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "edit";
+        }
+        
+        LoginModel oldUser = loginRepo.findByUserName(reg.getUserName());
+        oldUser.setUserName(reg.getUserName());
+        oldUser.setDaysOff(reg.getDaysOff());
+        oldUser.setPassWord(reg.getPassWord());
+        
+        regService.Save(oldUser);
+        
+        return "edit";
    }
 }

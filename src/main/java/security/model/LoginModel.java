@@ -30,16 +30,28 @@ public class LoginModel implements Serializable {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "idUser"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleModel> roles;
 
-    public LoginModel() {
-        //Empty constructor for JPA
-    }
+    /**
+     * Create a new LoginModel.
+     * Empty constructor for JPA
+     */
+    public LoginModel() { }
 
+    /**
+     * Create a new LoginModel.
+     * @param user LoginModel all information will be retrieved from this object.
+     */
     public LoginModel(LoginModel user) {
         this.idUser = user.idUser;
         this.userName = user.userName;
         this.passWord = user.passWord;
     }
-
+    
+    /**
+     * Create a new LoginModel.
+     * @param passWord Password specified by the user (string value). Needs to be at least 4 characters long.
+     * @param userName Username specified by the user (string value). Needs to be at least 3 characters long.
+     * @param daysOff Days off (int value). Minimal 1 day larger number is also valid.
+     */
     public LoginModel(String passWord, String userName, int daysOff) {
         this.passWord = passWord;
         this.userName = userName;
@@ -84,5 +96,13 @@ public class LoginModel implements Serializable {
 
     public void setPasswordVerify(String passwordVerify) {
         this.passwordVerify = passwordVerify;
+    }
+    
+    public Long getIDUser() {
+        return this.idUser;
+    }
+    
+    public void setIDUser(Long idUser) {
+        this.idUser = idUser;
     }
 }
