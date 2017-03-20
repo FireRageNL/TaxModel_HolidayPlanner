@@ -58,7 +58,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
         } else {
             bindingResult.addError(new ObjectError("PasswordFail", "Please enter matching passwords"));
             return "user";
-        }
-    }
+        } 
+   }
 }
 
