@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import security.model.RequestModel;
 
 /**
  *
@@ -45,7 +46,27 @@ public class MvcController extends WebMvcConfigurerAdapter {
     public String showRegForm(Login reg, BindingResult bindingResult) {
         return "user";
     }
-
+    
+    @GetMapping("/request")
+    public String showRequestForm(Model model) {
+        model.addAttribute("request", new RequestModel());
+        return "request";
+    }
+    
+    @PostMapping("/request")
+    public String sendRequest(@Valid RequestModel reg, BindingResult bindingResult) {
+        
+        if(bindingResult.hasErrors()){
+            System.out.println(bindingResult.getAllErrors().toString());
+            return "request";
+        }
+        
+        else{
+            return "request";    
+        }
+       
+    }
+    
     @PostMapping("/register")
     public String register(@Valid Login reg, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
