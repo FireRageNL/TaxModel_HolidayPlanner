@@ -5,8 +5,8 @@
  */
 package navigation;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import security.model.RoleModel;
 
 /**
  *
@@ -16,6 +16,11 @@ public class SideBarModel {
 
     public String Name;
     public String Location;
+    public Set<RoleModel> roles;
+
+    public Set<RoleModel> getRoles() {
+        return roles;
+    }
 
     public SideBarModel(String Name, String Location) {
         this.Name = Name;

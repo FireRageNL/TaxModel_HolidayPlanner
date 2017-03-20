@@ -16,7 +16,7 @@ and open the template in the editor.
                 <a class="sidebar-brand">Navigation</a>
             <div class="sidebar-collapse collapse">
                 <ul class="side sidebar-side" th:Object="${SideBarModel}">
-                    <li th:each="nav : ${SideBarModel}" class="active"><a th:href="${nav.Location}" th:text="${nav.Name}"></a></li>
+                    <li th:if="${}" th:each="nav : ${SideBarModel}" class="active"><a th:href="${nav.Location}" th:text="${nav.Name}"></a></li>
                 </ul>
             </div>
         </div>
