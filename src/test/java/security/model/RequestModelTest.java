@@ -36,6 +36,18 @@ public class RequestModelTest {
         RequestModel emptyModel = new RequestModel();
     }
     
+    @Test 
+    public void getStatusTest(){
+        Assert.assertEquals(0, testModel.getStatus());
+    }
+    
+    @Test
+    public void setStatusTest(){
+        testModel.setStatus(StatusEnum.APPROVED.ordinal());
+        int expectedValue = 1;
+        Assert.assertEquals(expectedValue, testModel.getStatus());
+    }
+    
     @Test
     public void getAndSetRequestorTest() {
         LoginModel testLogin = new LoginModel();

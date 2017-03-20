@@ -25,6 +25,9 @@ public class RequestModel implements Serializable {
     @Column(name = "idRequest")
     private Long idRequest;
     
+    @Column(name = "status")
+    private int status;
+    
     @Size(min = 4, message = "The reason needs to be at least 4 characters long")
     @Column(name = "reason")
     private String reason;
@@ -52,6 +55,15 @@ public class RequestModel implements Serializable {
         this.reason = reason;
         this.startDate = fromDate;
         this.endDate = tillDate;
+        this.status = 0;
+    }
+    
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
     
     public LoginModel getRequestor() {
