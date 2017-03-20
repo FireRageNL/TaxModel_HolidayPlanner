@@ -1,6 +1,7 @@
 package planner;
 
 import java.util.ArrayList;
+import java.util.Set;
 import security.repo.LoginRepository;
 import security.model.LoginModel;
 import javax.validation.Valid;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import navigation.SideBarModel;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import security.model.RequestModel;
+import security.model.RoleModel;
 
 /**
  *
@@ -38,18 +41,27 @@ public class MvcController extends WebMvcConfigurerAdapter {
         registry.addViewController("/secret").setViewName("secret");
     }
     
-    @GetMapping("/")
+    @GetMapping("/home")
     public String showIndex(Model model){
-        ArrayList<SideBarModel> navigations = new ArrayList<SideBarModel>();
-        navigations.add(new SideBarModel("Home", "/"));
-        navigations.add(new SideBarModel("Login", "/login"));
-        navigations.add(new SideBarModel("Register", "/register"));
+        ArrayList<SideBarModel> navigations = new ArrayList<>();
+        
+        navigations.add(new SideBarModel("Home", "/home"));
+        navigations.add(new SideBarModel("Login", "/"));
         navigations.add(new SideBarModel("Request days off", "/request"));
+        
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        LoginModel userNameModel = loginRepo.findByUserName(name);
+        Set<RoleModel> roleModels = userNameModel.getRoles();
+        for(RoleModel role : roleModels){
+            if(role.getName().equals("ADMIN")){
+                navigations.add(new SideBarModel("Register", "/register"));
+            }
+        }
         model.addAttribute("SideBarModel", navigations);
         return "index";
     }
 
-    @GetMapping("/login")
+    @GetMapping("/")
     public String showLoginForm(Model model) {
         model.addAttribute("LoginModel", new LoginModel());
         return "login";

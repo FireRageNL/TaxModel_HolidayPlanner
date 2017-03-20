@@ -16,11 +16,6 @@ public class SideBarModel {
 
     public String Name;
     public String Location;
-    public Set<RoleModel> roles;
-
-    public Set<RoleModel> getRoles() {
-        return roles;
-    }
 
     public SideBarModel(String Name, String Location) {
         this.Name = Name;
