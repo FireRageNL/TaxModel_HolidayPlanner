@@ -1,6 +1,7 @@
 package planner;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.*;
 
 @Entity
@@ -11,12 +12,16 @@ public class Login implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idUser")
     private Long idUser;
-    
+
     @Column(name = "userName")
     private String userName;
-    
+
     @Column(name = "passWord")
     private String passWord;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "idUser"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     public Login() {
         //Empty constructor for JPA
@@ -47,5 +52,13 @@ public class Login implements Serializable {
 
     public void setPassWord(String passWord) {
         this.passWord = passWord;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

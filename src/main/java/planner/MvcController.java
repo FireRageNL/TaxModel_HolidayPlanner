@@ -45,7 +45,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
         if (bindingResult.hasErrors()) {
             return "user";
         }
-        if (loginRepo.findByUserName(reg.getUserName()) == null) {
+        if (loginRepo.findByUserName(reg.getUserName()) != null) {
             bindingResult.addError(new ObjectError("UsernameExists", "This username already exists, please chose another"));
             return "user";
         }

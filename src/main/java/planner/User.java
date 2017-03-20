@@ -1,11 +1,16 @@
 package planner;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
@@ -32,15 +37,18 @@ public class User implements Serializable {
     @Size(min = 3, max = 40, message = "Username is too short or too long")
     @Column(name = "userName")
     private String userName;
-    @Size(min=4, message = "The password needs to be at least 4 characters long")
+    @Size(min = 4, message = "The password needs to be at least 4 characters long")
     @Column(name = "passWord")
     private String passWord;
-    @NotNull(message = "Please repeat your password")
     @Transient
     private String passwordVerify;
     @Min(value = 1, message = "Please enter a number larger than 1 as days off")
     @Column(name = "daysOff")
     private int daysOff;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "idUser"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     public User() {
         //Empty constructor
@@ -87,6 +95,7 @@ public class User implements Serializable {
     public Long getIdUser() {
         return idUser;
     }
+
     public void setIdUser(Long idUser) {
         this.idUser = idUser;
     }
@@ -99,4 +108,11 @@ public class User implements Serializable {
         this.daysOff = daysOff;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 }

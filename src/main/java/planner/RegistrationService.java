@@ -1,5 +1,6 @@
 package planner;
 
+import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ public class RegistrationService {
     
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private UsrRoleRepository roleRepository;
 
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -30,6 +34,7 @@ public class RegistrationService {
         String password = user.getPassWord();
         String encryptedPassword = bCryptPasswordEncoder.encode(password);
         user.setPassWord(encryptedPassword);
+        user.setRoles(new HashSet<>(roleRepository.findByName("USER")));
         userRepository.save(user);
     }
 
