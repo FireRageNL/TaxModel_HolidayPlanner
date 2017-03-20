@@ -46,6 +46,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
         navigations.add(new SideBarModel("Home", "/"));
         navigations.add(new SideBarModel("Login", "/login"));
         navigations.add(new SideBarModel("Register", "/register"));
+        navigations.add(new SideBarModel("Request days off", "/request"));
         model.addAttribute("SideBarModel", navigations);
         return "index";
     }
@@ -70,6 +71,8 @@ public class MvcController extends WebMvcConfigurerAdapter {
     
     @PostMapping("/request")
     public String sendRequest(@ModelAttribute("RequestModel") @Valid RequestModel reg, BindingResult bindingResult) {
+        System.out.println(reg.getStartDate());
+        System.out.println(reg.getEndDate());
         
         if(bindingResult.hasErrors()){
             System.out.println(bindingResult.getAllErrors().toString());
