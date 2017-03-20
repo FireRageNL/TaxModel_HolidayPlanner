@@ -1,6 +1,7 @@
 package security.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -14,14 +15,18 @@ public class LoginModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idUser")
     private Long idUser;
+    
     @Size(min = 3, max = 40, message = "Username is too short or too long")
     @Column(name = "userName")
     private String userName;
+    
     @Size(min = 4, message = "The password needs to be at least 4 characters long")
     @Column(name = "passWord")
     private String passWord;
+    
     @Transient
     private String passwordVerify;
+    
     @Min(value = 1, message = "Please enter a number larger than 1 as days off")
     @Column(name = "daysOff")
     private int daysOff;
@@ -29,6 +34,9 @@ public class LoginModel implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "idUser"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleModel> roles;
+    
+    @OneToMany (mappedBy = "requestor")
+    private Set<RequestModel> requests = new HashSet();
 
     public LoginModel() {
         //Empty constructor for JPA

@@ -25,42 +25,43 @@ public class RequestModel implements Serializable {
     @Column(name = "idRequest")
     private Long idRequest;
     
-    @Column(name = "idUser")
-    private Long idUser;
-    
     @Size(min = 4, message = "The reason needs to be at least 4 characters long")
     @Column(name = "reason")
     private String reason;
     
-    @Column(name = "startDate", nullable = false)
+    @Column(name = "startDate")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date startDate;
     
-    @Column(name = "endDate", nullable = false)
+    @Column(name = "endDate")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date endDate;
     
+    @ManyToOne
+    @JoinColumn(name = "idUser")
+    private LoginModel requestor;
+    
+    @Transient
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     
     public RequestModel() {
         // Empty Constructor
     }
     
-    public RequestModel(Long idUser, String reason, Date fromDate, Date tillDate) {
-        this.idUser = idUser;
+    public RequestModel(String reason, Date fromDate, Date tillDate) {
         this.reason = reason;
         this.startDate = fromDate;
         this.endDate = tillDate;
     }
-
-    public Long getIdUser() {
-        return idUser;
+    
+    public LoginModel getRequestor() {
+        return requestor;
     }
 
-    public void setIdUser(Long idUser) {
-        this.idUser = idUser;
+    public void setRequestor(LoginModel requestor) {
+        this.requestor = requestor;
     }
-
+    
     public String getReason() {
         return reason;
     }
@@ -74,7 +75,6 @@ public class RequestModel implements Serializable {
     }
 
     public void setStartDate(String startDate) throws ParseException {
-        System.out.println("Start date is: "+startDate);
         this.startDate = formatter.parse(startDate);
     }
 
@@ -82,9 +82,7 @@ public class RequestModel implements Serializable {
         return endDate;
     }
 
-    public void setEndDate(String endDate) throws ParseException {
-        System.out.println("End date is:"+endDate);
-        
+    public void setEndDate(String endDate) throws ParseException {        
         this.endDate = formatter.parse(endDate);
     }
     

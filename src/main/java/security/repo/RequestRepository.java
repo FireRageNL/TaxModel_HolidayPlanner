@@ -5,17 +5,16 @@
  */
 package security.repo;
 
-import security.model.RoleModel;
-import java.util.HashSet;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-
+import security.model.RequestModel;
 
 /**
  *
- * @author roy_v
+ * @author Martijn
  */
+
 @Repository
-public interface UsrRoleRepository extends CrudRepository<RoleModel, Long>{
-    public HashSet<RoleModel> findByName(String name);   
+public interface RequestRepository extends CrudRepository<RequestModel,Long> {
+    
 }

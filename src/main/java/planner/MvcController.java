@@ -1,7 +1,7 @@
 package planner;
 
 import java.util.ArrayList;
-import security.repo.LoginRepository;
+import security.repo.*;
 import security.model.LoginModel;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import navigation.SideBarModel;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import security.model.RequestModel;
 
@@ -32,6 +33,8 @@ public class MvcController extends WebMvcConfigurerAdapter {
     private LoginRepository loginRepo;
     @Autowired
     private RegistrationService regService;
+    @Autowired
+    private RequestRepository requestRepo;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -69,16 +72,22 @@ public class MvcController extends WebMvcConfigurerAdapter {
     
     @PostMapping("/request")
     public String sendRequest(@ModelAttribute("RequestModel") @Valid RequestModel reg, BindingResult bindingResult) {
-        System.out.println(reg.getStartDate());
-        System.out.println(reg.getEndDate());
         
         if(bindingResult.hasErrors()){
             System.out.println(bindingResult.getAllErrors().toString());
             return "request";
         }
         
+        if(reg.getEndDate().before(reg.getStartDate())){
+            bindingResult.addError(new ObjectError("endDateBeforeStart", "The selected end date is before the start date, please choose another end date."));
+            return "request";
+        }
+        
         else{
-            return "request";    
+            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+            reg.setRequestor(loginRepo.findByUserName(userName));
+            requestRepo.save(reg);
+            return "redirect:/secret";    
         }
        
     }

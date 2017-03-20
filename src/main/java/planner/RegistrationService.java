@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import security.model.LoginModel;
+import security.model.RequestModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
