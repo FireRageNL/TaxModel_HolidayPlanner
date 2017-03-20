@@ -5,7 +5,6 @@
  */
 package security.model;
 
-import security.model.LoginModel;
 import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
