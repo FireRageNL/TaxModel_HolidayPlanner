@@ -56,6 +56,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
         for(RoleModel role : roleModels){
             if(role.getName().equals("ADMIN")){
                 navigations.add(new SideBarModel("Register", "/register"));
+                navigations.add(new SideBarModel("Edit user","/edit"));
             }
         }
         model.addAttribute("SideBarModel", navigations);
