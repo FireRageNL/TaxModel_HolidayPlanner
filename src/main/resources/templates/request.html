@@ -11,11 +11,13 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
-        <form th:action="@{/request}" method="post" th:object="${RequestModel}">            
+        <form th:action="@{/request}" method="post" th:object="${RequestModel}" modelAttribute="RequestModel">            
             <div> <label>Reason: <input type="text" name="reason"/> </label> </div>
-            <div> <label>From: <input type="date" name="from"/> </label> </div>
-            <div> <label>Till: <input type="date" name="till"/> </label> </div>
+            <div> <label>Start Date: <input type="date" name="startDate"/> </label> </div>
+            <div> <label>End Date: <input type="date" name="endDate"/> </label> </div>
+            
             <div th:if="${#fields.hasErrors('*')}"><p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p></div>
+            
             <div> <input type="submit" value="Send"/> </div>
         </form>
     </body>
