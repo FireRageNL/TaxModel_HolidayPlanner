@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import navigation.SideBarModel;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
  *
@@ -53,12 +54,13 @@ public class MvcController extends WebMvcConfigurerAdapter {
     }
 
     @GetMapping("/register")
-    public String showRegForm(LoginModel reg, BindingResult bindingResult) {
+    public String showRegForm(Model model) {
+        model.addAttribute("LoginModel", new LoginModel());
         return "user";
     }
 
     @PostMapping("/register")
-    public String register(@Valid LoginModel reg, BindingResult bindingResult) {
+    public String register(@ModelAttribute("LoginModel") @Valid LoginModel reg, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user";
         }
