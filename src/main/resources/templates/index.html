@@ -15,6 +15,11 @@ and open the template in the editor.
             <div class="sidebar-header">
                 <a class="sidebar-brand" href="#">Navigation</a>
             </div>
+            <div class="sidebar-collapse collapse">
+                <ul class="side sidebar-side" th:Object="${SideBarModel}">
+                    <li class="active"><a th:href="*{Location}" th:text="*{Name}">Hallo Roy</a></li>
+                </ul>
+            </div>
         </div>
     </body>
 </html>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import navigation.SideBarModel;
 
 /**
  *
@@ -31,8 +32,13 @@ public class MvcController extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("index");
         registry.addViewController("/secret").setViewName("secret");
+    }
+    
+    @GetMapping("/")
+    public String showIndex(Model model){
+        model.addAttribute("SideBarModel", new SideBarModel("Home", "/"));
+        return "index";
     }
 
     @GetMapping("/login")
