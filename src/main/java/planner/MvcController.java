@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import security.model.RequestModel;
 import security.model.RoleModel;
+import security.model.StatusEnum;
 import security.repo.RequestRepository;
 
 /**
@@ -51,7 +52,8 @@ public class MvcController extends WebMvcConfigurerAdapter {
 
         navigations.add(new SideBarModel("Home", "/home"));
         navigations.add(new SideBarModel("Login", "/"));
-        navigations.add(new SideBarModel("Request days off", "/request"));
+        navigations.add(new SideBarModel("Request Days Off", "/request"));
+        navigations.add(new SideBarModel("Requests Status", "/status"));
 
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         LoginModel userNameModel = loginRepo.findByUserName(name);
@@ -122,7 +124,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
         }
         if (reg.getPassWord().equals(reg.getPasswordVerify())) {
             regService.Save(new LoginModel(reg.getPassWord(), reg.getUserName(), reg.getDaysOff()));
-            return "redirect:/secret";
+            return "redirect:/status";
         } else {
             bindingResult.addError(new ObjectError("PasswordFail", "Please enter matching passwords"));
             return "user";
@@ -136,7 +138,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
         model.addAttribute("LoginModel", loginRepo.findByUserName(userName));
         return "edit";
     }
-
+    
     @PostMapping("/edit")
     public String editUser(@ModelAttribute("LoginModel") @Valid LoginModel reg, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -157,5 +159,14 @@ public class MvcController extends WebMvcConfigurerAdapter {
     public String getRequests(Model model) {
         model.addAttribute("requests", requestRepo.findAll());
         return "openrequests";
+    }
+    
+    @GetMapping("/status")
+    public String showStatus(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        LoginModel currentUser = loginRepo.findByUserName(auth.getName());
+        
+        model.addAttribute("requests", requestRepo.findByRequestor(currentUser));
+        return "status";
     }
 }

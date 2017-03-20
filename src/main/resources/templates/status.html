@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<html>
+    <head>
+        <title>Request overview</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        
+        <h1>Your current requests</h1>
+        
+        <table th:object="${RequestModel}">
+            
+            <tr>
+                <td> Username </td>
+                <td> Start Date </td>
+                <td> End date </td>
+                <td> Reason </td>
+                <td> Status </td>
+            </tr>
+            
+            <tr th:each="request : ${requests}">
+                <td th:text="${request.requestor.UserName}"> </td>
+                <td th:text="${request.startDate}"> </td>
+                <td th:text="${request.endDate}"> </td>
+                <td th:text="${request.reason}"> </td>
+                <td th:text="${request.status}"> </td>
+            </tr>
+            
+        </table>
+        
+    </body>
+</html>

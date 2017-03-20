@@ -38,14 +38,13 @@ public class RequestModelTest {
     
     @Test 
     public void getStatusTest(){
-        Assert.assertEquals(0, testModel.getStatus());
+        Assert.assertEquals(StatusEnum.PENDING.name(), testModel.getStatus());
     }
     
     @Test
     public void setStatusTest(){
-        testModel.setStatus(StatusEnum.APPROVED.ordinal());
-        int expectedValue = 1;
-        Assert.assertEquals(expectedValue, testModel.getStatus());
+        testModel.setStatus(StatusEnum.APPROVED);
+        Assert.assertEquals(StatusEnum.APPROVED.name(), testModel.getStatus());
     }
     
     @Test

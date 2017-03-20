@@ -58,12 +58,12 @@ public class RequestModel implements Serializable {
         this.status = 0;
     }
     
-    public int getStatus() {
-        return status;
+    public String getStatus() {
+        return StatusEnum.values()[status].name();
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setStatus(StatusEnum status) {
+        this.status = status.ordinal();
     }
     
     public LoginModel getRequestor() {
