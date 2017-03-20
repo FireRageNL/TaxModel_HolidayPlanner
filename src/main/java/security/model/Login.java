@@ -1,34 +1,14 @@
-package planner;
+package security.model;
 
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author roy_v
- */
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class Login implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,21 +30,19 @@ public class User implements Serializable {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "idUser"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    public User() {
-        //Empty constructor
+    public Login() {
+        //Empty constructor for JPA
     }
 
-    public User(User user) {
-        this.daysOff = user.daysOff;
+    public Login(Login user) {
         this.idUser = user.idUser;
-        this.passWord = user.passWord;
-        this.passwordVerify = user.passwordVerify;
         this.userName = user.userName;
+        this.passWord = user.passWord;
     }
 
-    public User(String passWord, String userName, int daysOff) {
-        this.userName = userName;
+    public Login(String passWord, String userName, int daysOff) {
         this.passWord = passWord;
+        this.userName = userName;
         this.daysOff = daysOff;
     }
 
@@ -84,20 +62,12 @@ public class User implements Serializable {
         this.passWord = passWord;
     }
 
-    public String getPasswordVerify() {
-        return passwordVerify;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setPasswordVerify(String passwordVerify) {
-        this.passwordVerify = passwordVerify;
-    }
-
-    public Long getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(Long idUser) {
-        this.idUser = idUser;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public int getDaysOff() {
@@ -108,11 +78,11 @@ public class User implements Serializable {
         this.daysOff = daysOff;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public String getPasswordVerify() {
+        return passwordVerify;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setPasswordVerify(String passwordVerify) {
+        this.passwordVerify = passwordVerify;
     }
 }

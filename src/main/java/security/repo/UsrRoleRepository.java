@@ -3,15 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package planner;
+package security.repo;
 
+import security.model.Role;
 import java.util.HashSet;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
 
 /**
  *
  * @author roy_v
  */
+@Repository
 public interface UsrRoleRepository extends CrudRepository<Role, Long>{
         public HashSet<Role> findByName(String name);   
 

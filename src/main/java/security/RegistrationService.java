@@ -1,5 +1,8 @@
-package planner;
+package security;
 
+import security.repo.LoginRepository;
+import security.repo.UsrRoleRepository;
+import security.model.Login;
 import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,7 +22,7 @@ public class RegistrationService {
 
     
     @Autowired
-    private UserRepository userRepository;
+    private LoginRepository userRepository;
     
     @Autowired
     private UsrRoleRepository roleRepository;
@@ -30,7 +33,7 @@ public class RegistrationService {
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
-    public void Save(User user) {
+    public void Save(Login user) {
         String password = user.getPassWord();
         String encryptedPassword = bCryptPasswordEncoder.encode(password);
         user.setPassWord(encryptedPassword);

@@ -1,5 +1,8 @@
 package planner;
 
+import security.repo.LoginRepository;
+import security.model.Login;
+import security.RegistrationService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,12 +39,12 @@ public class MvcController extends WebMvcConfigurerAdapter {
     }
 
     @GetMapping("/register")
-    public String showRegForm(User reg, BindingResult bindingResult) {
+    public String showRegForm(Login reg, BindingResult bindingResult) {
         return "user";
     }
 
     @PostMapping("/register")
-    public String register(@Valid User reg, BindingResult bindingResult) {
+    public String register(@Valid Login reg, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user";
         }
@@ -50,7 +53,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
             return "user";
         }
         if (reg.getPassWord().equals(reg.getPasswordVerify())) {
-            regService.Save(new User(reg.getPassWord(), reg.getUserName(), reg.getDaysOff()));
+            regService.Save(new Login(reg.getPassWord(), reg.getUserName(), reg.getDaysOff()));
             return "redirect:/secret";
         } else {
             bindingResult.addError(new ObjectError("PasswordFail", "Please enter matching passwords"));

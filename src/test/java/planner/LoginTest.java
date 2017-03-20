@@ -5,7 +5,7 @@
  */
 package planner;
 
-import planner.Login;
+import security.model.Login;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -94,7 +94,7 @@ public class LoginTest {
     @Test
     public void customConstructorTest(){
         System.out.println("Custom constructor test");
-        Login instance = new Login("testpw","testuser");
+        Login instance = new Login("testpw","testuser",1);
         String password = "testpw";
         String username = "testuser";
         assertEquals(password,instance.getPassWord());

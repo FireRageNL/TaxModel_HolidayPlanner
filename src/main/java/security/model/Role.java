@@ -1,4 +1,4 @@
-package planner;
+package security.model;
 /**
  *
  * @author roy_v

@@ -5,6 +5,8 @@
  */
 package planner;
 
+import security.model.CustomUserDetail;
+import security.model.Login;
 import java.util.Collection;
 import org.junit.After;
 import org.junit.AfterClass;

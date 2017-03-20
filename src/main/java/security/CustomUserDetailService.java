@@ -1,5 +1,8 @@
-package planner;
+package security;
 
+import security.model.CustomUserDetail;
+import security.repo.LoginRepository;
+import security.model.Login;
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
