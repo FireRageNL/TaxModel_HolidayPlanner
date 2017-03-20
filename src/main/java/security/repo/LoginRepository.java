@@ -1,6 +1,6 @@
 package security.repo;
 
-import security.model.Login;
+import security.model.LoginModel;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
  * @author roy_v
  */
 @Repository
-public interface LoginRepository extends CrudRepository<Login,Long> {
-    public Login findByUserName(String username);   
+public interface LoginRepository extends CrudRepository<LoginModel,Long> {
+    public LoginModel findByUserName(String username);   
 }

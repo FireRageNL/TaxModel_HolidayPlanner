@@ -4,13 +4,22 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Tax Holiday Planner</title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
-        <div>TODO write content</div>
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <a class="sidebar-brand">Navigation</a>
+            <div class="sidebar-collapse collapse">
+                <ul class="side sidebar-side" th:Object="${SideBarModel}">
+                    <li th:each="nav : ${SideBarModel}" class="active"><a th:href="${nav.Location}" th:text="${nav.Name}"></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
     </body>
 </html>

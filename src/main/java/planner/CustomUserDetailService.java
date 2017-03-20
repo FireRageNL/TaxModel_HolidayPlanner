@@ -1,8 +1,8 @@
 package planner;
 
-import security.model.CustomUserDetail;
+import security.model.CustomUserDetailModel;
 import security.repo.LoginRepository;
-import security.model.Login;
+import security.model.LoginModel;
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +41,14 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String string) {
-        Login user = loginRepository.findByUserName(string);
+        LoginModel user = loginRepository.findByUserName(string);
         
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         user.getRoles().forEach(r -> grantedAuthorities.add(new SimpleGrantedAuthority(r.getName())));
         if (user.getUserName() == null) {
             throw new UsernameNotFoundException("No username found with the username: " + string);
         } else {
-            return new CustomUserDetail(user);
+            return new CustomUserDetailModel(user);
         }
     }
 
