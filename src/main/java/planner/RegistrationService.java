@@ -2,12 +2,12 @@ package planner;
 
 import security.repo.UsrRoleRepository;
 import security.repo.LoginRepository;
-import security.model.Login;
+import security.model.LoginModel;
 import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import security.model.Login;
+import security.model.LoginModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -34,7 +34,7 @@ public class RegistrationService {
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
-    public void Save(Login user) {
+    public void Save(LoginModel user) {
         String password = user.getPassWord();
         String encryptedPassword = bCryptPasswordEncoder.encode(password);
         user.setPassWord(encryptedPassword);

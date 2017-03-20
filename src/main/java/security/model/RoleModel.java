@@ -3,18 +3,18 @@ package security.model;
  *
  * @author roy_v
  */
-import security.model.Login;
+import security.model.LoginModel;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "usrRoles")
-public class Role implements Serializable {
+public class RoleModel implements Serializable {
 
     private Long id;
     private String name;
-    private Set<Login> users;
+    private Set<LoginModel> users;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,11 +35,11 @@ public class Role implements Serializable {
     }
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
-    public Set<Login> getUsers() {
+    public Set<LoginModel> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<Login> users) {
+    public void setUsers(Set<LoginModel> users) {
         this.users = users;
     }
 }

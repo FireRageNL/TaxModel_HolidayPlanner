@@ -5,7 +5,7 @@
  */
 package security.model;
 
-import security.model.Login;
+import security.model.LoginModel;
 import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -15,8 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
  *
  * @author roy_v
  */
-public class CustomUserDetail extends Login implements UserDetails {
-    public CustomUserDetail(Login log){
+public class CustomUserDetailModel extends LoginModel implements UserDetails {
+    public CustomUserDetailModel(LoginModel log){
         super(log);
     }
 

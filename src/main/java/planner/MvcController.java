@@ -1,7 +1,7 @@
 package planner;
 
 import security.repo.LoginRepository;
-import security.model.Login;
+import security.model.LoginModel;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -43,17 +43,17 @@ public class MvcController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
-        model.addAttribute("login", new Login());
+        model.addAttribute("LoginModel", new LoginModel());
         return "login";
     }
 
     @GetMapping("/register")
-    public String showRegForm(Login reg, BindingResult bindingResult) {
+    public String showRegForm(LoginModel reg, BindingResult bindingResult) {
         return "user";
     }
 
     @PostMapping("/register")
-    public String register(@Valid Login reg, BindingResult bindingResult) {
+    public String register(@Valid LoginModel reg, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user";
         }
@@ -62,7 +62,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
             return "user";
         }
         if (reg.getPassWord().equals(reg.getPasswordVerify())) {
-            regService.Save(new Login(reg.getPassWord(), reg.getUserName(), reg.getDaysOff()));
+            regService.Save(new LoginModel(reg.getPassWord(), reg.getUserName(), reg.getDaysOff()));
             return "redirect:/secret";
         } else {
             bindingResult.addError(new ObjectError("PasswordFail", "Please enter matching passwords"));
