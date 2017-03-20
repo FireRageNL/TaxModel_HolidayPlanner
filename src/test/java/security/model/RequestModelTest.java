@@ -32,6 +32,11 @@ public class RequestModelTest {
     }
     
     @Test
+    public void emptyConstructorTest() {
+        RequestModel emptyModel = new RequestModel();
+    }
+    
+    @Test
     public void getAndSetRequestorTest() {
         LoginModel testLogin = new LoginModel();
         testLogin.setUserName("Jan Henk");
