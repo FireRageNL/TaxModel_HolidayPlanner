@@ -5,7 +5,7 @@
  */
 package security.repo;
 
-import java.util.ArrayList;
+import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import security.model.LoginModel;
@@ -19,6 +19,7 @@ import security.model.RequestModel;
 @Repository
 public interface RequestRepository extends CrudRepository<RequestModel,Long> {
     
-    public ArrayList<RequestModel> findByRequestor(LoginModel requestor);
+    public List<RequestModel> findByRequestor(LoginModel requestor);
+    public List<RequestModel> findByStatus(int status);
     
 }

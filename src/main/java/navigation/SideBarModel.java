@@ -5,37 +5,34 @@
  */
 package navigation;
 
-import java.util.*;
-import security.model.RoleModel;
-
 /**
  *
  * @author Violet
  */
 public class SideBarModel {
 
-    public String Name;
-    public String Location;
+    private String name;
+    private String location;
 
     public SideBarModel(String Name, String Location) {
-        this.Name = Name;
-        this.Location = Location;
+        this.name = Name;
+        this.location = Location;
     }
 
     public void setLocation(String Location) {
-        this.Location = Location;
+        this.location = Location;
     }
 
     public String getLocation() {
-        return Location;
+        return location;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String Name) {
-        this.Name = Name;
+        this.name = Name;
     }
 
 }

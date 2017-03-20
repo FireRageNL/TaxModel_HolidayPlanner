@@ -22,7 +22,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import security.model.RequestModel;
 import security.model.RoleModel;
-import security.model.StatusEnum;
 import security.repo.RequestRepository;
 
 /**
@@ -59,7 +58,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
         LoginModel userNameModel = loginRepo.findByUserName(name);
         Set<RoleModel> roleModels = userNameModel.getRoles();
         for (RoleModel role : roleModels) {
-            if (role.getName().equals("ADMIN")) {
+            if ("ADMIN".equals(role.getName())) {
                 navigations.add(new SideBarModel("Register", "/register"));
                 navigations.add(new SideBarModel("Edit user", "/edit"));
                 navigations.add(new SideBarModel("Show holiday requests", "/openrequests"));
@@ -97,7 +96,6 @@ public class MvcController extends WebMvcConfigurerAdapter {
     public String sendRequest(@ModelAttribute("RequestModel") @Valid RequestModel reg, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            System.out.println(bindingResult.getAllErrors().toString());
             return "request";
         }
 
@@ -138,7 +136,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
         model.addAttribute("LoginModel", loginRepo.findByUserName(userName));
         return "edit";
     }
-    
+
     @PostMapping("/edit")
     public String editUser(@ModelAttribute("LoginModel") @Valid LoginModel reg, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -157,15 +155,15 @@ public class MvcController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/openrequests")
     public String getRequests(Model model) {
-        model.addAttribute("requests", requestRepo.findAll());
+        model.addAttribute("requests", requestRepo.findByStatus(0));
         return "openrequests";
     }
-    
+
     @GetMapping("/status")
     public String showStatus(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         LoginModel currentUser = loginRepo.findByUserName(auth.getName());
-        
+
         model.addAttribute("requests", requestRepo.findByRequestor(currentUser));
         return "status";
     }

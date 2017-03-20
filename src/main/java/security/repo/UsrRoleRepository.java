@@ -6,7 +6,7 @@
 package security.repo;
 
 import security.model.RoleModel;
-import java.util.HashSet;
+import java.util.Set;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,5 +17,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UsrRoleRepository extends CrudRepository<RoleModel, Long>{
-    public HashSet<RoleModel> findByName(String name);   
+    public Set<RoleModel> findByName(String name);   
 }
