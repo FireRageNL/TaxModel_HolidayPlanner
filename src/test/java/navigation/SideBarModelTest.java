@@ -20,6 +20,8 @@ import security.model.RoleModel;
  */
 public class SideBarModelTest {
     
+    SideBarModel instance;
+    
     public SideBarModelTest() {
     }
     
@@ -33,6 +35,7 @@ public class SideBarModelTest {
     
     @Before
     public void setUp() {
+        instance = new SideBarModel("Violet", "/Tilburg");
     }
     
     @After
@@ -45,11 +48,9 @@ public class SideBarModelTest {
     @Test
     public void testSetLocation() {
         System.out.println("setLocation");
-        String Location = "";
-        SideBarModel instance = null;
+        String Location = "/Bemmel";
         instance.setLocation(Location);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(Location, instance.getLocation());
     }
 
     /**
@@ -58,12 +59,9 @@ public class SideBarModelTest {
     @Test
     public void testGetLocation() {
         System.out.println("getLocation");
-        SideBarModel instance = null;
-        String expResult = "";
+        String expResult = "/Tilburg";
         String result = instance.getLocation();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -72,12 +70,9 @@ public class SideBarModelTest {
     @Test
     public void testGetName() {
         System.out.println("getName");
-        SideBarModel instance = null;
-        String expResult = "";
+        String expResult = "Violet";
         String result = instance.getName();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -86,11 +81,9 @@ public class SideBarModelTest {
     @Test
     public void testSetName() {
         System.out.println("setName");
-        String Name = "";
-        SideBarModel instance = null;
+        String Name = "Roy";
         instance.setName(Name);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(Name, instance.getName());
     }
     
 }
