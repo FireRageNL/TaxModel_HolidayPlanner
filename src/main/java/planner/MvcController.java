@@ -1,5 +1,6 @@
 package planner;
 
+import java.util.ArrayList;
 import security.repo.LoginRepository;
 import security.model.LoginModel;
 import javax.validation.Valid;
@@ -38,7 +39,11 @@ public class MvcController extends WebMvcConfigurerAdapter {
     
     @GetMapping("/")
     public String showIndex(Model model){
-        model.addAttribute("SideBarModel", new SideBarModel("Home", "/"));
+        ArrayList<SideBarModel> navigations = new ArrayList<SideBarModel>();
+        navigations.add(new SideBarModel("Home", "/"));
+        navigations.add(new SideBarModel("Login", "/login"));
+        navigations.add(new SideBarModel("Register", "/register"));
+        model.addAttribute("SideBarModel", navigations);
         return "index";
     }
 

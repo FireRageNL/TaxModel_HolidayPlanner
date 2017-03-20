@@ -13,13 +13,13 @@ and open the template in the editor.
     <body>
         <div class="sidebar">
             <div class="sidebar-header">
-                <a class="sidebar-brand" href="#">Navigation</a>
-            </div>
+                <a class="sidebar-brand">Navigation</a>
             <div class="sidebar-collapse collapse">
                 <ul class="side sidebar-side" th:Object="${SideBarModel}">
-                    <li class="active"><a th:href="*{Location}" th:text="*{Name}">Hallo Roy</a></li>
+                    <li th:each="nav : ${SideBarModel}" class="active"><a th:href="${nav.Location}" th:text="${nav.Name}"></a></li>
                 </ul>
             </div>
         </div>
+    </div>
     </body>
 </html>
