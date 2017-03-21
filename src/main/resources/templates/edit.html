@@ -3,15 +3,29 @@
     <head>
         <title>Edit User</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="http://royvadl84.eightyfour.axc.nl/main.css"/>
+
     </head>
     <body>
-        <form th:action="@{/edit}" method = "post" th:object="${LoginModel}" modelAttribute="LoginModel">
-            <div> <label>Username: <input type="text" th:field="*{userName}"/> </label></div>
-            <div> <label>Password: <input type="password" th:field="*{passWord}" /> </label></div>
-            <div> <label>Repeat Password: <input type="password" th:field="*{passwordVerify}" /> </label> </div>
-            <div> <label>Amount of free days: <input type="text" th:field="*{daysOff}" /> </label> </div>
-            <div th:if="${#fields.hasErrors('*')}"><p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p></div>
-            <div><input type="submit" value="Edit"/></div>
-        </form>
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <a class="sidebar-brand">Navigation</a>
+                <div class="sidebar-collapse collapse">
+                    <ul class="side sidebar-side" th:Object="${SideBarModel}">
+                        <li th:each="nav : ${SideBarModel}" class="active"><a th:href="${nav.location}" th:text="${nav.name}"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <form th:action="@{/edit}" method = "post" th:object="${LoginModel}" modelAttribute="LoginModel">
+                <div> <label>Username: <input type="text" th:field="*{userName}"/> </label></div>
+                <div> <label>Password: <input type="password" th:field="*{passWord}" /> </label></div>
+                <div> <label>Repeat Password: <input type="password" th:field="*{passwordVerify}" /> </label> </div>
+                <div> <label>Amount of free days: <input type="text" th:field="*{daysOff}" /> </label> </div>
+                <div th:if="${#fields.hasErrors('*')}"><p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p></div>
+                <div><input type="submit" value="Edit"/></div>
+            </form>
+        </div>
     </body>
 </html>

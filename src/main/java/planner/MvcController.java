@@ -20,8 +20,13 @@ import navigation.SideBarModel;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import security.model.RequestModel;
 import security.model.RoleModel;
+import security.model.StatusEnum;
 import security.repo.RequestRepository;
 
 /**
@@ -40,20 +45,12 @@ public class MvcController extends WebMvcConfigurerAdapter {
     @Autowired
     private RequestRepository requestRepo;
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/secret").setViewName("secret");
-    }
-
-    @GetMapping("/home")
-    public String showIndex(Model model) {
+    private ArrayList<SideBarModel> getNavigation() {
         ArrayList<SideBarModel> navigations = new ArrayList<>();
-
         navigations.add(new SideBarModel("Home", "/home"));
         navigations.add(new SideBarModel("Login", "/"));
         navigations.add(new SideBarModel("Request Days Off", "/request"));
         navigations.add(new SideBarModel("Requests Status", "/status"));
-
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         LoginModel userNameModel = loginRepo.findByUserName(name);
         Set<RoleModel> roleModels = userNameModel.getRoles();
@@ -64,7 +61,12 @@ public class MvcController extends WebMvcConfigurerAdapter {
                 navigations.add(new SideBarModel("Show holiday requests", "/openrequests"));
             }
         }
-        model.addAttribute("SideBarModel", navigations);
+        return navigations;
+    }
+
+    @GetMapping("/home")
+    public String showIndex(Model model) {
+        model.addAttribute("SideBarModel", getNavigation());
         return "index";
     }
 
@@ -82,12 +84,14 @@ public class MvcController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/register")
     public String showRegForm(Model model) {
+        model.addAttribute("SideBarModel", getNavigation());
         model.addAttribute("LoginModel", new LoginModel());
         return "user";
     }
 
     @GetMapping("/request")
     public String showRequestForm(Model model) {
+        model.addAttribute("SideBarModel", getNavigation());
         model.addAttribute("RequestModel", new RequestModel());
         return "request";
     }
@@ -106,7 +110,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
             String userName = SecurityContextHolder.getContext().getAuthentication().getName();
             reg.setRequestor(loginRepo.findByUserName(userName));
             requestRepo.save(reg);
-            return "redirect:/secret";
+            return "redirect:/status";
         }
 
     }
@@ -122,7 +126,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
         }
         if (reg.getPassWord().equals(reg.getPasswordVerify())) {
             regService.Save(new LoginModel(reg.getPassWord(), reg.getUserName(), reg.getDaysOff()));
-            return "redirect:/status";
+            return "redirect:/login";
         } else {
             bindingResult.addError(new ObjectError("PasswordFail", "Please enter matching passwords"));
             return "user";
@@ -131,6 +135,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/edit")
     public String showEditForm(Model model) {
+        model.addAttribute("SideBarModel", getNavigation());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
         model.addAttribute("LoginModel", loginRepo.findByUserName(userName));
@@ -155,16 +160,49 @@ public class MvcController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/openrequests")
     public String getRequests(Model model) {
+        model.addAttribute("SideBarModel", getNavigation());
         model.addAttribute("requests", requestRepo.findByStatus(0));
         return "openrequests";
     }
 
     @GetMapping("/status")
     public String showStatus(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        LoginModel currentUser = loginRepo.findByUserName(auth.getName());
-
+        LoginModel currentUser = getLoggedInUser();
+        model.addAttribute("SideBarModel", getNavigation());
         model.addAttribute("requests", requestRepo.findByRequestor(currentUser));
         return "status";
+    }
+
+    @RequestMapping("/openrequests/accept/")
+    public String acceptHoliday(@RequestParam("id") long id, Model model) {
+        LoginModel currentUser = getLoggedInUser();
+        for (RoleModel role : currentUser.getRoles()) {
+            if ("ADMIN".equals(role.getName())) {
+                RequestModel toEdit = requestRepo.findOne(id);
+                toEdit.setStatus(StatusEnum.APPROVED);
+                requestRepo.save(toEdit);
+            }
+        }
+        model.addAttribute("requests", requestRepo.findByRequestor(currentUser));
+        return "redirect:/openrequests";
+    }
+
+    @RequestMapping("/openrequests/deny/")
+    public String denyHoliday(@RequestParam("id") long id, Model model) {
+        LoginModel currentUser = getLoggedInUser();
+        for (RoleModel role : currentUser.getRoles()) {
+            if ("ADMIN".equals(role.getName())) {
+                RequestModel toEdit = requestRepo.findOne(id);
+                toEdit.setStatus(StatusEnum.DECLINED);
+                requestRepo.save(toEdit);
+            }
+        }
+        model.addAttribute("requests", requestRepo.findByRequestor(currentUser));
+        return "redirect:/openrequests";
+    }
+
+    private LoginModel getLoggedInUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return loginRepo.findByUserName(auth.getName());
     }
 }

@@ -1,0 +1,7 @@
+.sidebar{
+    float:left;
+    width:200px;
+}
+.body{
+    overflow:auto;
+}

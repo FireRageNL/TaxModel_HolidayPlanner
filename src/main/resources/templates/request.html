@@ -9,16 +9,29 @@ and open the template in the editor.
         <title>Request days off</title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="http://royvadl84.eightyfour.axc.nl/main.css"/>
     </head>
     <body>
-        <form th:action="@{/request}" method="post" th:object="${RequestModel}" modelAttribute="RequestModel">  
-            <div> <label>Reason: <input type="text" name="reason"/> </label> </div>
-            <div> <label>Start Date: <input type="date" name="startDate"/> </label> </div>
-            <div> <label>End Date: <input type="date" name="endDate"/> </label> </div>
-            
-            <div th:if="${#fields.hasErrors('*')}"><p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p></div>
-            
-            <div> <input type="submit" value="Send"/> </div>
-        </form>
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <a class="sidebar-brand">Navigation</a>
+                <div class="sidebar-collapse collapse">
+                    <ul class="side sidebar-side" th:Object="${SideBarModel}">
+                        <li th:each="nav : ${SideBarModel}" class="active"><a th:href="${nav.location}" th:text="${nav.name}"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <form th:action="@{/request}" method="post" th:object="${RequestModel}" modelAttribute="RequestModel">  
+                <div> <label>Reason: <input type="text" name="reason"/> </label> </div>
+                <div> <label>Start Date: <input type="date" name="startDate"/> </label> </div>
+                <div> <label>End Date: <input type="date" name="endDate"/> </label> </div>
+
+                <div th:if="${#fields.hasErrors('*')}"><p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p></div>
+
+                <div> <input type="submit" value="Send"/> </div>
+            </form>
+        </div>
     </body>
 </html>

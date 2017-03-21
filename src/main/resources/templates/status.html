@@ -11,30 +11,40 @@ and open the template in the editor.
         <title>Request overview</title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="http://royvadl84.eightyfour.axc.nl/main.css"/>
     </head>
-    <body>
-        
+    <body>        
         <h1>Your current requests</h1>
-        
-        <table th:object="${RequestModel}">
-            
-            <tr>
-                <td> Username </td>
-                <td> Start Date </td>
-                <td> End date </td>
-                <td> Reason </td>
-                <td> Status </td>
-            </tr>
-            
-            <tr th:each="request : ${requests}">
-                <td th:text="${request.requestor.UserName}"> </td>
-                <td th:text="${request.startDate}"> </td>
-                <td th:text="${request.endDate}"> </td>
-                <td th:text="${request.reason}"> </td>
-                <td th:text="${request.status}"> </td>
-            </tr>
-            
-        </table>
-        
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <a class="sidebar-brand">Navigation</a>
+                <div class="sidebar-collapse collapse">
+                    <ul class="side sidebar-side" th:Object="${SideBarModel}">
+                        <li th:each="nav : ${SideBarModel}" class="active"><a th:href="${nav.location}" th:text="${nav.name}"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <table th:object="${RequestModel}">
+
+                <tr>
+                    <td> Username </td>
+                    <td> Start Date </td>
+                    <td> End date </td>
+                    <td> Reason </td>
+                    <td> Status </td>
+                </tr>
+
+                <tr th:each="request : ${requests}">
+                    <td th:text="${request.requestor.UserName}"> </td>
+                    <td th:text="${request.startDate}"> </td>
+                    <td th:text="${request.endDate}"> </td>
+                    <td th:text="${request.reason}"> </td>
+                    <td th:text="${request.status}"> </td>
+                </tr>
+
+            </table>
+        </div>
     </body>
 </html>
