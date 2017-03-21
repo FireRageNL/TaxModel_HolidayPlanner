@@ -56,6 +56,7 @@ public class LoginModel implements Serializable {
         this.idUser = user.idUser;
         this.userName = user.userName;
         this.passWord = user.passWord;
+        this.daysOff = user.daysOff;
     }
 
     /**

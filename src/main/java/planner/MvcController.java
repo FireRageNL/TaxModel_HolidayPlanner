@@ -14,16 +14,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import navigation.SideBarModel;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import security.model.RequestModel;
 import security.model.RoleModel;
 import security.model.StatusEnum;
@@ -37,7 +34,10 @@ import security.repo.RequestRepository;
 @EnableJpaRepositories(basePackages = "security.model")
 @EntityScan(basePackages = "security.repo")
 public class MvcController extends WebMvcConfigurerAdapter {
-
+    private static final String ADMIN ="ADMIN";
+    private static final String SIDEBAR = "SideBarModel";
+    private static final String REQUESTS = "requests";
+    private static final String LOGINMODEL = "LoginModel";
     @Autowired
     private LoginRepository loginRepo;
     @Autowired
@@ -55,7 +55,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
         LoginModel userNameModel = loginRepo.findByUserName(name);
         Set<RoleModel> roleModels = userNameModel.getRoles();
         for (RoleModel role : roleModels) {
-            if ("ADMIN".equals(role.getName())) {
+            if (ADMIN.equals(role.getName())) {
                 navigations.add(new SideBarModel("Register", "/register"));
                 navigations.add(new SideBarModel("Edit user", "/edit"));
                 navigations.add(new SideBarModel("Show holiday requests", "/openrequests"));
@@ -66,32 +66,32 @@ public class MvcController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/home")
     public String showIndex(Model model) {
-        model.addAttribute("SideBarModel", getNavigation());
+        model.addAttribute(SIDEBAR, getNavigation());
         return "index";
     }
 
     @GetMapping("/")
     public String showLoginForm(Model model) {
-        model.addAttribute("LoginModel", new LoginModel());
+        model.addAttribute(LOGINMODEL, new LoginModel());
         return "login";
     }
 
     @GetMapping("/login")
     public String showLoginFormAgain(Model model) {
-        model.addAttribute("LoginModel", new LoginModel());
+        model.addAttribute(LOGINMODEL, new LoginModel());
         return "login";
     }
 
     @GetMapping("/register")
     public String showRegForm(Model model) {
-        model.addAttribute("SideBarModel", getNavigation());
-        model.addAttribute("LoginModel", new LoginModel());
+        model.addAttribute(SIDEBAR, getNavigation());
+        model.addAttribute(LOGINMODEL, new LoginModel());
         return "user";
     }
 
     @GetMapping("/request")
     public String showRequestForm(Model model) {
-        model.addAttribute("SideBarModel", getNavigation());
+        model.addAttribute(SIDEBAR, getNavigation());
         model.addAttribute("RequestModel", new RequestModel());
         return "request";
     }
@@ -125,7 +125,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
             return "user";
         }
         if (reg.getPassWord().equals(reg.getPasswordVerify())) {
-            regService.Save(new LoginModel(reg.getPassWord(), reg.getUserName(), reg.getDaysOff()));
+            regService.saveUser(new LoginModel(reg.getPassWord(), reg.getUserName(), reg.getDaysOff()));
             return "redirect:/login";
         } else {
             bindingResult.addError(new ObjectError("PasswordFail", "Please enter matching passwords"));
@@ -135,10 +135,10 @@ public class MvcController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/edit")
     public String showEditForm(Model model) {
-        model.addAttribute("SideBarModel", getNavigation());
+        model.addAttribute(SIDEBAR, getNavigation());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
-        model.addAttribute("LoginModel", loginRepo.findByUserName(userName));
+        model.addAttribute(LOGINMODEL, loginRepo.findByUserName(userName));
         return "edit";
     }
 
@@ -153,23 +153,23 @@ public class MvcController extends WebMvcConfigurerAdapter {
         oldUser.setDaysOff(reg.getDaysOff());
         oldUser.setPassWord(reg.getPassWord());
 
-        regService.Save(oldUser);
+        regService.saveUser(oldUser);
 
         return "edit";
     }
 
     @GetMapping("/openrequests")
     public String getRequests(Model model) {
-        model.addAttribute("SideBarModel", getNavigation());
-        model.addAttribute("requests", requestRepo.findByStatus(0));
+        model.addAttribute(SIDEBAR, getNavigation());
+        model.addAttribute(REQUESTS, requestRepo.findByStatus(0));
         return "openrequests";
     }
 
     @GetMapping("/status")
     public String showStatus(Model model) {
         LoginModel currentUser = getLoggedInUser();
-        model.addAttribute("SideBarModel", getNavigation());
-        model.addAttribute("requests", requestRepo.findByRequestor(currentUser));
+        model.addAttribute(SIDEBAR, getNavigation());
+        model.addAttribute(REQUESTS, requestRepo.findByRequestor(currentUser));
         return "status";
     }
 
@@ -177,13 +177,13 @@ public class MvcController extends WebMvcConfigurerAdapter {
     public String acceptHoliday(@RequestParam("id") long id, Model model) {
         LoginModel currentUser = getLoggedInUser();
         for (RoleModel role : currentUser.getRoles()) {
-            if ("ADMIN".equals(role.getName())) {
+            if (ADMIN.equals(role.getName())) {
                 RequestModel toEdit = requestRepo.findOne(id);
                 toEdit.setStatus(StatusEnum.APPROVED);
                 requestRepo.save(toEdit);
             }
         }
-        model.addAttribute("requests", requestRepo.findByRequestor(currentUser));
+        model.addAttribute(REQUESTS, requestRepo.findByRequestor(currentUser));
         return "redirect:/openrequests";
     }
 
@@ -191,7 +191,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
     public String denyHoliday(@RequestParam("id") long id, Model model) {
         LoginModel currentUser = getLoggedInUser();
         for (RoleModel role : currentUser.getRoles()) {
-            if ("ADMIN".equals(role.getName())) {
+            if (ADMIN.equals(role.getName())) {
                 RequestModel toEdit = requestRepo.findOne(id);
                 toEdit.setStatus(StatusEnum.DECLINED);
                 requestRepo.save(toEdit);

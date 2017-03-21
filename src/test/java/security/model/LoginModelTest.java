@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
  * @author roy_v
  */
 public class LoginModelTest {
+    LoginModel test;
 
     public LoginModelTest() {
     }
@@ -33,6 +34,8 @@ public class LoginModelTest {
 
     @Before
     public void setUp() {
+        test = new LoginModel("abcd","test",1);
+        test.setIDUser(1L);
     }
 
     @After
@@ -45,12 +48,8 @@ public class LoginModelTest {
     @Test
     public void testGetUserName() {
         System.out.println("getUserName");
-        LoginModel test = new LoginModel();
-        test.setPassWord("aaaa");
-        test.setUserName("user");
-        LoginModel instance = new LoginModel(test);
-        String expResult = "user";
-        String result = instance.getUserName();
+        String expResult = "test";
+        String result = test.getUserName();
         assertEquals(expResult, result);
     }
 
@@ -60,10 +59,9 @@ public class LoginModelTest {
     @Test
     public void testSetUserName() {
         System.out.println("setUserName");
-        String userName = "test";
-        LoginModel instance = new LoginModel();
-        instance.setUserName(userName);
-        assertEquals("test", instance.getUserName());
+        String userName = "testing";
+        test.setUserName(userName);
+        assertEquals("testing", test.getUserName());
     }
 
     /**
@@ -72,12 +70,8 @@ public class LoginModelTest {
     @Test
     public void testGetPassWord() {
         System.out.println("getPassWord");
-        LoginModel test = new LoginModel();
-        test.setPassWord("aaaa");
-        test.setUserName("user");
-        LoginModel instance = new LoginModel(test);
-        String expResult = "aaaa";
-        String result = instance.getPassWord();
+        String expResult = "abcd";
+        String result = test.getPassWord();
         assertEquals(expResult, result);
     }
 
@@ -88,9 +82,8 @@ public class LoginModelTest {
     public void testSetPassWord() {
         System.out.println("setPassWord");
         String passWord = "bbbb";
-        LoginModel instance = new LoginModel();
-        instance.setPassWord(passWord);
-        assertEquals("bbbb", instance.getPassWord());
+        test.setPassWord(passWord);
+        assertEquals("bbbb", test.getPassWord());
     }
 
     @Test
@@ -102,14 +95,22 @@ public class LoginModelTest {
         assertEquals(password, instance.getPassWord());
         assertEquals(username, instance.getUserName());
     }
-
+    @Test
+    public void customConstructorTest2(){
+        System.out.println("Custom constructor taking a login object");
+        LoginModel secondTest = new LoginModel(test);
+        String password = "abcd";
+        String username = "test";
+        assertEquals(password,secondTest.getPassWord());
+        assertEquals(username,secondTest.getUserName());
+    }
     /**
      * Test of getRoles method, of class LoginModel.
      */
     @Test
     public void testGetRoles() {
         System.out.println("getRoles");
-        LoginModel instance = new LoginModel();
+        LoginModel instance = test;
         Set<RoleModel> expResult = new HashSet<>();
         expResult.add(new RoleModel());
         instance.setRoles(expResult);
@@ -124,9 +125,8 @@ public class LoginModelTest {
     public void testSetRoles() {
         System.out.println("setRoles");
         Set<RoleModel> roles = null;
-        LoginModel instance = new LoginModel();
-        instance.setRoles(roles);
-        assertNull(instance.getRoles());
+        test.setRoles(roles);
+        assertNull(test.getRoles());
     }
 
     /**
@@ -135,9 +135,8 @@ public class LoginModelTest {
     @Test
     public void testGetDaysOff() {
         System.out.println("getDaysOff");
-        LoginModel instance = new LoginModel();
-        int expResult = 0;
-        int result = instance.getDaysOff();
+        int expResult = 1;
+        int result = test.getDaysOff();
         assertEquals(expResult, result);
     }
 
@@ -148,9 +147,8 @@ public class LoginModelTest {
     public void testSetDaysOff() {
         System.out.println("setDaysOff");
         int daysOff = 50;
-        LoginModel instance = new LoginModel();
-        instance.setDaysOff(daysOff);
-        assertEquals(daysOff, instance.getDaysOff());
+        test.setDaysOff(daysOff);
+        assertEquals(daysOff, test.getDaysOff());
     }
 
     /**
@@ -159,9 +157,8 @@ public class LoginModelTest {
     @Test
     public void testGetPasswordVerify() {
         System.out.println("getPasswordVerify");
-        LoginModel instance = new LoginModel();
         String expResult = null;
-        String result = instance.getPasswordVerify();
+        String result = test.getPasswordVerify();
         assertEquals(expResult, result);
     }
 
@@ -172,9 +169,31 @@ public class LoginModelTest {
     public void testSetPasswordVerify() {
         System.out.println("setPasswordVerify");
         String passwordVerify = "testing";
-        LoginModel instance = new LoginModel();
-        instance.setPasswordVerify(passwordVerify);
-        assertEquals(passwordVerify, instance.getPasswordVerify());
+        test.setPasswordVerify(passwordVerify);
+        assertEquals(passwordVerify, test.getPasswordVerify());
     }
+
+    /**
+     * Test of getIDUser method, of class LoginModel.
+     */
+    @Test
+    public void testGetIDUser() {
+        System.out.println("getIDUser");
+        Long expResult = 1L;
+        Long result = test.getIDUser();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setIDUser method, of class LoginModel.
+     */
+    @Test
+    public void testSetIDUser() {
+        System.out.println("setIDUser");
+        Long idUser = 2L;
+        test.setIDUser(idUser);
+        assertEquals(idUser,test.getIDUser());
+    }
+
 
 }

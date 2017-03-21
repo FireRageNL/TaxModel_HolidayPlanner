@@ -33,7 +33,7 @@ public class RegistrationService {
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
-    public void Save(LoginModel user) {
+    public void saveUser(LoginModel user) {
         String password = user.getPassWord();
         String encryptedPassword = bCryptPasswordEncoder.encode(password);
         user.setPassWord(encryptedPassword);

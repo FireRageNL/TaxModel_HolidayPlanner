@@ -31,12 +31,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class CustomUserDetailService implements UserDetailsService {
 
     private final LoginRepository loginRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public CustomUserDetailService(LoginRepository logRepo) {
         this.loginRepository = logRepo;
-        this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
     @Override
