@@ -74,7 +74,6 @@ public class MvcController extends WebMvcConfigurerAdapter {
     public String showUserList(Model model) {
         model.addAttribute(SIDEBAR, getNavigation());
         model.addAttribute("users", loginRepo.findAll());
-        System.out.println(Arrays.asList(loginRepo.findAll()));
         return "useroverview";
     }
 
@@ -168,7 +167,6 @@ public class MvcController extends WebMvcConfigurerAdapter {
         oldUser.setUserName(reg.getUserName());
         oldUser.setDaysOff(reg.getDaysOff());
         if (reg.getPassWord().length() > 3) {
-            System.out.println("Password length is: " + reg.getPassWord().length());
             oldUser.setPassWord(reg.getPassWord());
             regService.editUser(oldUser, true);
         } else {
