@@ -20,10 +20,9 @@ import security.model.LoginModel;
 @Service
 public class RegistrationService {
 
-    
     @Autowired
     private LoginRepository userRepository;
-    
+
     @Autowired
     private UsrRoleRepository roleRepository;
 
@@ -39,5 +38,13 @@ public class RegistrationService {
         user.setPassWord(encryptedPassword);
         user.setRoles(new HashSet<>(roleRepository.findByName("USER")));
         userRepository.save(user);
+    }
+
+    public void editUser(LoginModel user, boolean passwordChanged) {
+        if(passwordChanged){
+            user.setPassWord(bCryptPasswordEncoder.encode(user.getPassWord()));
+        }
+        userRepository.save(user);
+
     }
 }

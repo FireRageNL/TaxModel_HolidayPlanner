@@ -1,7 +1,10 @@
 package planner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import security.repo.LoginRepository;
 import security.model.LoginModel;
 import javax.validation.Valid;
@@ -18,8 +21,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import navigation.SideBarModel;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import security.model.RequestModel;
 import security.model.RoleModel;
@@ -34,7 +39,8 @@ import security.repo.RequestRepository;
 @EnableJpaRepositories(basePackages = "security.model")
 @EntityScan(basePackages = "security.repo")
 public class MvcController extends WebMvcConfigurerAdapter {
-    private static final String ADMIN ="ADMIN";
+
+    private static final String ADMIN = "ADMIN";
     private static final String SIDEBAR = "SideBarModel";
     private static final String REQUESTS = "requests";
     private static final String LOGINMODEL = "LoginModel";
@@ -48,7 +54,7 @@ public class MvcController extends WebMvcConfigurerAdapter {
     private ArrayList<SideBarModel> getNavigation() {
         ArrayList<SideBarModel> navigations = new ArrayList<>();
         navigations.add(new SideBarModel("Home", "/home"));
-        navigations.add(new SideBarModel("Login", "/"));
+        navigations.add(new SideBarModel("Logout", "/logout"));
         navigations.add(new SideBarModel("Request Days Off", "/request"));
         navigations.add(new SideBarModel("Requests Status", "/status"));
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -57,11 +63,19 @@ public class MvcController extends WebMvcConfigurerAdapter {
         for (RoleModel role : roleModels) {
             if (ADMIN.equals(role.getName())) {
                 navigations.add(new SideBarModel("Register", "/register"));
-                navigations.add(new SideBarModel("Edit user", "/edit"));
+                navigations.add(new SideBarModel("Edit user", "/edituser"));
                 navigations.add(new SideBarModel("Show holiday requests", "/openrequests"));
             }
         }
         return navigations;
+    }
+
+    @GetMapping("/edituser")
+    public String showUserList(Model model) {
+        model.addAttribute(SIDEBAR, getNavigation());
+        model.addAttribute("users", loginRepo.findAll());
+        System.out.println(Arrays.asList(loginRepo.findAll()));
+        return "useroverview";
     }
 
     @GetMapping("/home")
@@ -117,11 +131,15 @@ public class MvcController extends WebMvcConfigurerAdapter {
 
     @PostMapping("/register")
     public String register(@ModelAttribute("LoginModel") @Valid LoginModel reg, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "user";
-        }
+
         if (loginRepo.findByUserName(reg.getUserName()) != null) {
             bindingResult.addError(new ObjectError("UsernameExists", "This username already exists, please chose another"));
+            return "user";
+        }
+        if (reg.getPassWord().length() < 4) {
+            bindingResult.addError(new ObjectError("PasswordFail", "Please enter a password longer than 4 characters"));
+        }
+        if (bindingResult.hasErrors()) {
             return "user";
         }
         if (reg.getPassWord().equals(reg.getPasswordVerify())) {
@@ -134,28 +152,29 @@ public class MvcController extends WebMvcConfigurerAdapter {
     }
 
     @GetMapping("/edit")
-    public String showEditForm(Model model) {
+    public String showEditForm(@RequestParam("id") long id, Model model) {
         model.addAttribute(SIDEBAR, getNavigation());
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userName = auth.getName();
-        model.addAttribute(LOGINMODEL, loginRepo.findByUserName(userName));
+        model.addAttribute(LOGINMODEL, loginRepo.findOne(id));
+        model.addAttribute("uid", id);
         return "edit";
     }
 
     @PostMapping("/edit")
-    public String editUser(@ModelAttribute("LoginModel") @Valid LoginModel reg, BindingResult bindingResult) {
+    public String editUser(@RequestParam("id") long id, @ModelAttribute("LoginModel") @Valid LoginModel reg, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "edit";
         }
-
-        LoginModel oldUser = loginRepo.findByUserName(reg.getUserName());
+        LoginModel oldUser = loginRepo.findOne(id);
         oldUser.setUserName(reg.getUserName());
         oldUser.setDaysOff(reg.getDaysOff());
-        oldUser.setPassWord(reg.getPassWord());
-
-        regService.saveUser(oldUser);
-
-        return "edit";
+        if (reg.getPassWord().length() > 3) {
+            System.out.println("Password length is: " + reg.getPassWord().length());
+            oldUser.setPassWord(reg.getPassWord());
+            regService.editUser(oldUser, true);
+        } else {
+            regService.editUser(oldUser, false);
+        }
+        return "redirect:/edituser";
     }
 
     @GetMapping("/openrequests")
@@ -199,6 +218,15 @@ public class MvcController extends WebMvcConfigurerAdapter {
         }
         model.addAttribute("requests", requestRepo.findByRequestor(currentUser));
         return "redirect:/openrequests";
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/";
     }
 
     private LoginModel getLoggedInUser() {

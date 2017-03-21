@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="body">
-            <form th:action="@{/edit}" method = "post" th:object="${LoginModel}" modelAttribute="LoginModel">
+            <form th:action="@{/edit/(id=${uid})}" method = "post" th:object="${LoginModel}" modelAttribute="LoginModel">
                 <div> <label>Username: <input type="text" th:field="*{userName}"/> </label></div>
                 <div> <label>Password: <input type="password" th:field="*{passWord}" /> </label></div>
                 <div> <label>Repeat Password: <input type="password" th:field="*{passwordVerify}" /> </label> </div>

@@ -35,7 +35,7 @@ public class LoginModelTest {
     @Before
     public void setUp() {
         test = new LoginModel("abcd","test",1);
-        test.setIDUser(1L);
+        test.setIdUser(1L);
     }
 
     @After
@@ -180,7 +180,7 @@ public class LoginModelTest {
     public void testGetIDUser() {
         System.out.println("getIDUser");
         Long expResult = 1L;
-        Long result = test.getIDUser();
+        Long result = test.getIdUser();
         assertEquals(expResult, result);
     }
 
@@ -191,8 +191,8 @@ public class LoginModelTest {
     public void testSetIDUser() {
         System.out.println("setIDUser");
         Long idUser = 2L;
-        test.setIDUser(idUser);
-        assertEquals(idUser,test.getIDUser());
+        test.setIdUser(idUser);
+        assertEquals(idUser,test.getIdUser());
     }
 
 

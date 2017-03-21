@@ -20,7 +20,6 @@ public class LoginModel implements Serializable {
     @Column(name = "userName")
     private String userName;
 
-    @Size(min = 4, message = "The password needs to be at least 4 characters long")
     @Column(name = "passWord")
     private String passWord;
 
@@ -115,11 +114,11 @@ public class LoginModel implements Serializable {
         this.passwordVerify = passwordVerify;
     }
 
-    public Long getIDUser() {
+    public Long getIdUser() {
         return this.idUser;
     }
 
-    public void setIDUser(Long idUser) {
+    public void setIdUser(Long idUser) {
         this.idUser = idUser;
     }
 }
