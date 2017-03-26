@@ -83,12 +83,10 @@ public class MvcController extends WebMvcConfigurerAdapter {
         LoginModel userNameModel = loginRepo.findByUserName(name);
         Set<RoleModel> roleModels = userNameModel.getRoles();
         for (RoleModel role : roleModels) {
-            if (ADMIN.equals(role.getName())) {
-                if(requestRepo.findByStatus(0)!= null) {
+            if (ADMIN.equals(role.getName()) && (requestRepo.findByStatus(0)!= null)) {
                 int newRequests = requestRepo.findByStatus(0).size();
                 String notification = "There are " + newRequests + " new requests";
                 model.addAttribute("Notifications", notification);
-                }
             }
         }
         return "index";
