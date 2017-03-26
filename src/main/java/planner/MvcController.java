@@ -79,6 +79,18 @@ public class MvcController extends WebMvcConfigurerAdapter {
     @GetMapping("/home")
     public String showIndex(Model model) {
         model.addAttribute(SIDEBAR, getNavigation());
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        LoginModel userNameModel = loginRepo.findByUserName(name);
+        Set<RoleModel> roleModels = userNameModel.getRoles();
+        for (RoleModel role : roleModels) {
+            if (ADMIN.equals(role.getName())) {
+                if(requestRepo.findByStatus(0)!= null) {
+                int newRequests = requestRepo.findByStatus(0).size();
+                String notification = "There are " + newRequests + " new requests";
+                model.addAttribute("Notifications", notification);
+                }
+            }
+        }
         return "index";
     }
 
